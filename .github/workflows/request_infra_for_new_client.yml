@@ -22,7 +22,7 @@ jobs:
 
       - name: Extract values using Python
         run: |
-          echo "${{ github.event.issue.body }}" | python3 parse_issue.py
+          echo "${{ github.event.issue.body }}" | python3 scripts/extract_issue_fields.py
 
       - name: Debug print
         run: |

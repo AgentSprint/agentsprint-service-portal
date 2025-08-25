@@ -29,6 +29,7 @@ if __name__ == "__main__":
     # Find sections that start with "### <Header>" and capture everything until the next "###" or end of text
     SECTION_RE = re.compile(r"^###\s+(.+?)\s*\n([\s\S]*?)(?=^###\s+|\Z)", re.MULTILINE)
 
+
     pairs = {}
     for header, block in SECTION_RE.findall(BODY):
         key = sanitize_key(header)
