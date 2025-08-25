@@ -46,10 +46,15 @@ jobs:
 
   call-reusable:
     needs: prepare
-    uses: AgentSprint/agentsprint-info-azure/.github/workflows/onboarding-new-client.yml@main
+    uses: peter-evans/repository-dispatch@v3
     with:
-      company_name: ${{ needs.prepare.outputs.company_name }}
-      company_code: ${{ needs.prepare.outputs.company_code }}
-      location:     ${{ needs.prepare.outputs.location }}
-      issue_details: ${{ github.event.issue.body }}
-    secrets: inherit
+      token: ${{ secrets.GH_TOKEN }}   # PAT with repo + workflow
+      repository: AgentSprint/agentsprint-info-azure
+      event-type: onboard-new-client
+      client-payload: |
+        {
+          "company_name": "${{ env.company_name }}",
+          "company_code": "${{ env.company_code }}",
+          "location":     "${{ env.location }}",
+          "issue_details": "ashish"
+        }
