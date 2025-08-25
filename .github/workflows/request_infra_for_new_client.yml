@@ -10,11 +10,15 @@ permissions:
   issues: write
 
 jobs:
-  onboard-client:
-    runs-on: ubuntu-latest
+  prepare:
     if: ${{ github.event.issue.title == '[Client] Onboard new client' }}
+    runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    outputs:
+      company_name: ${{ steps.out.outputs.company_name }}
+      company_code: ${{ steps.out.outputs.company_code }}
+      location:     ${{ steps.out.outputs.location }}
 
     steps:
       - name: Checkout repo
@@ -30,10 +34,22 @@ jobs:
           echo "Company Code: $company_code"
           echo "Location: $location"
 
-      - name: Call reusable workflow in Repo B
-        uses: AgentSprint/agentsprint-info-azure/.github/workflows/onboarding-new-client.yml@main
-        with:
-          company_name: ${{ env.company_name }}
-          company_code: ${{ env.company_code }}
-          location:     ${{ env.location }}
-          issue_details: "ashish"
+      # Promote env vars to job outputs for the next job
+      - name: Set job outputs
+        id: out
+        run: |
+          {
+            echo "company_name=$company_name"
+            echo "company_code=$company_code"
+            echo "location=$location"
+          } >> "$GITHUB_OUTPUT"
+
+  call-reusable:
+    needs: prepare
+    uses: AgentSprint/agentsprint-info-azure/.github/workflows/onboarding-new-client.yml@main
+    with:
+      company_name: ${{ needs.prepare.outputs.company_name }}
+      company_code: ${{ needs.prepare.outputs.company_code }}
+      location:     ${{ needs.prepare.outputs.location }}
+      issue_details: ${{ github.event.issue.body }}
+    secrets: inherit
