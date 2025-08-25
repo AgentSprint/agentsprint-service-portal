@@ -17,6 +17,9 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Extract values using Python
         run: |
           echo "${{ github.event.issue.body }}" | python3 parse_issue.py
