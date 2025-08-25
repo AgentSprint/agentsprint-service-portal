@@ -35,6 +35,6 @@ jobs:
 
       - name: Debug print
         run: |
-          echo "Company Name: $company_name"
-          echo "Company Code: $company_code"
-          echo "Location: $location"
+          echo "Company Name: ${{ env.company_name }}"
+          echo "Company Code: ${{ env.company_code }}"
+          echo "Location: ${{ env.location }}"
