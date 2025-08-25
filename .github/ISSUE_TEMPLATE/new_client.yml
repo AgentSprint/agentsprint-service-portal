@@ -1,0 +1,29 @@
+name: New Client Onboarding
+description: Request infrastructure for a new client
+title: "[Client] Onboard new client"
+labels: [client, onboarding]
+body:
+  - type: input
+    id: company_name
+    attributes:
+      label: Company Name
+      description: Enter the company name
+      placeholder: e.g. Acme Corp
+    validations:
+      required: true
+  - type: input
+    id: company_code
+    attributes:
+      label: Company Code
+      description: Short, unique identifier for the company
+      placeholder: e.g. acme
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Azure region for this client
+      placeholder: e.g. Central India
+    validations:
+      required: true
