@@ -29,3 +29,10 @@ jobs:
           echo "Company Name: $company_name"
           echo "Company Code: $company_code"
           echo "Location: $location"
+
+      - name: Call reusable workflow in Repo B
+        uses: AgentSprint/agentsprint-info-azure/.github/workflows/onboarding-new-client.yml@main
+        with:
+          company_name: ${{ env.company_name }}
+          company_code: ${{ env.company_code }}
+          location:     ${{ env.location }}
