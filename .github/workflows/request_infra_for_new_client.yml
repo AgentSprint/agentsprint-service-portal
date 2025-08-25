@@ -36,3 +36,4 @@ jobs:
           company_name: ${{ env.company_name }}
           company_code: ${{ env.company_code }}
           location:     ${{ env.location }}
+          issue_details: "ashish"
