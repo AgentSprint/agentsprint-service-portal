@@ -17,24 +17,12 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
-      - name: Extract values from issue body
-        id: extract
+      - name: Extract values using Python
         run: |
-          echo "ISSUE_BODY<<EOF" >> $GITHUB_ENV
-          echo "${{ github.event.issue.body }}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          # Extract using grep/sed/awk (since body is YAML-like Markdown)
-          COMPANY_NAME=$(echo "${{ github.event.issue.body }}" | grep "Company Name" -A1 | tail -n1 | xargs)
-          COMPANY_CODE=$(echo "${{ github.event.issue.body }}" | grep "Company Code" -A1 | tail -n1 | xargs)
-          LOCATION=$(echo "${{ github.event.issue.body }}" | grep "Location" -A1 | tail -n1 | xargs)
-
-          echo "company_name=$COMPANY_NAME" >> $GITHUB_ENV
-          echo "company_code=$COMPANY_CODE" >> $GITHUB_ENV
-          echo "location=$LOCATION" >> $GITHUB_ENV
+          echo "${{ github.event.issue.body }}" | python3 parse_issue.py
 
       - name: Debug print
         run: |
-          echo "Company Name: ${{ env.company_name }}"
-          echo "Company Code: ${{ env.company_code }}"
-          echo "Location: ${{ env.location }}"
+          echo "Company Name: $company_name"
+          echo "Company Code: $company_code"
+          echo "Location: $location"
